@@ -65,6 +65,31 @@ let stallStats;
 let data;
 let stallLabel;
 
+async function postData(url = '', data = {}) {
+    const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    });
+    return await response.json(); // parses JSON response into native JavaScript objects
+}
+
+function uploadGeoJson() {
+    try {
+        data.innerText = "Uploading... please wait...";
+        let url = "https://europe-west1-suc-layout.cloudfunctions.net/userUpload";
+        //url = "http://localhost:5000/suc-layout/europe-west1/userUpload";
+        postData(url, toGeoJson())
+            .then((response) => {
+                data.innerText = JSON.stringify(response);
+            });
+    } catch (e) {
+        data.innerText = e;
+    }
+}
+
 
 function drawCircle(context) {
     context.beginPath();
@@ -177,7 +202,7 @@ function logData() {
     data.innerText = result;
 }
 
-function logGeoJson() {
+function toGeoJson() {
     const features = [];
     for (let x = 0; x < stalls.length; x++) {
         const stall = stalls[x];
@@ -202,8 +227,11 @@ function logGeoJson() {
 
         features.push(turf.helpers.polygon([polygon], { "name": stall.label }));
     }
+    return turf.helpers.featureCollection(features);
+}
 
-    data.innerText = JSON.stringify(turf.helpers.featureCollection(features));
+function logGeoJson() {
+    data.innerText = JSON.stringify(toGeoJson());
 }
 
 
@@ -216,12 +244,12 @@ document.addEventListener("DOMContentLoaded", function (e) {
     initCanvas();
     drawSuc();
 
-    /*  let watchId = navigator.geolocation.watchPosition(updatePosition, function (positionError) {
-          console.log(positionError);
-      }, {
-          enableHighAccuracy: true,
-          maximumAge: 60000
-      });*/
+    let watchId = navigator.geolocation.watchPosition(updatePosition, function (positionError) {
+        console.log(positionError);
+    }, {
+        enableHighAccuracy: true,
+        maximumAge: 60000
+    });
 });
 
 function processKey(key, ignoreKeyDiff) {
