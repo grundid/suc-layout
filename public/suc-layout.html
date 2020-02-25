@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="de">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="turf.suc.tools.js"></script>
+    <script src="suc-layout.js"></script>
+    <title>Supercharger Layout</title>
+    <style>
+        body {
+            font-family: sans-serif;
+        }
+
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        .container div {
+            margin-right: 16px;
+        }
+
+        .label {
+            font-variant: small-caps;
+        }
+
+        .value {
+            font-size: 34px;
+        }
+
+        button {
+            height: 32px;
+            min-width: 64px;
+            margin: 8px;
+        }
+
+        @media (max-width: 767px) {
+            body {
+                padding-left: 8px;
+                padding-right: 8px;
+            }
+        }
+
+        @media (min-width: 768px) {
+            body {
+                padding-left: 32px;
+                padding-right: 32px;
+            }
+
+        }
+    </style>
+</head>
+
+<body>
+    <h4>Supercharger Layout</h4>
+    <div>
+        <canvas id="sucCanvas" width="960" height="500" style="background-color: #F0F0F0;">
+        </canvas>
+    </div>
+    <div id="stallStats"></div>
+    <div>
+        <button onclick="processKey('W');">Width+</button>
+        <button onclick="processKey('w');">Width-</button>
+        <button onclick="processKey('L');">Length+</button>
+        <button onclick="processKey('l');">Length-</button>
+        <button onclick="processKey('+');">Zoom+</button>
+        <button onclick="processKey('-');">Zoom-</button>
+        <button onclick="processKey('r');">Rotate left</button>
+        <button onclick="processKey('R');">Rotate right</button>
+    </div>
+    <div>
+        <input type="text" value="1A" id="stallLabel" style="width: 42px;font-size:24px;">
+        <button onclick="processKey('A');">Add stall</button>
+        <button onclick="processKey('d');">Delete stall</button>
+        <button onclick="processKey('s');">Select prev</button>
+        <button onclick="processKey('S');">Select next</button>
+        <button onclick="processKey('P');">Center Position</button>
+        <button onclick="processKey('D');">Delete all stalls</button>
+    </div>
+    <div>
+        <button onclick="processKey('ArrowLeft');">Move Left</button>
+        <button onclick="processKey('ArrowRight');">Move Right</button>
+        <button onclick="processKey('ArrowUp');">Move Up</button>
+        <button onclick="processKey('ArrowDown');">Move Down</button>
+        <button onclick="logData()">Log Data</button>
+        <button onclick="logGeoJson()">Log Json</button>
+    </div>
+    <div>
+        <button onclick="processKey(',');">Screen Left</button>
+        <button onclick="processKey('.');">Screen Right</button>
+        <button onclick="processKey('n');">Screen Up</button>
+        <button onclick="processKey('m');">Screen Down</button>
+    </div>
+    <div id="stats"></div>
+    <div id="data"></div>
+</body>
+
+</html>
