@@ -76,17 +76,24 @@ async function postData(url = '', data = {}) {
     return await response.json(); // parses JSON response into native JavaScript objects
 }
 
+let uploadInProgress = false;
 function uploadGeoJson() {
-    try {
-        data.innerText = "Uploading... please wait...";
-        let url = "https://europe-west1-suc-layout.cloudfunctions.net/userUpload";
-        //url = "http://localhost:5000/suc-layout/europe-west1/userUpload";
-        postData(url, toGeoJson())
-            .then((response) => {
-                data.innerText = JSON.stringify(response);
-            });
-    } catch (e) {
-        data.innerText = e;
+    if (!uploadInProgress) {
+        uploadInProgress = true;
+        try {
+            data.innerText = "Uploading... please wait...";
+            let url = "https://europe-west1-suc-layout.cloudfunctions.net/userUpload";
+            //url = "http://localhost:5000/suc-layout/europe-west1/userUpload";
+            postData(url, toGeoJson())
+                .then((response) => {
+                    data.innerText = JSON.stringify(response);
+                });
+        } catch (e) {
+            data.innerText = e;
+        }
+        finally {
+            uploadInProgress = false;
+        }
     }
 }
 
