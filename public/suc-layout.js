@@ -216,6 +216,8 @@ function logData() {
         result += "x: " + stall.x + ", y: " + stall.y + ", w: " + stall.width + ", l: " +
             stall.length + " r: " + stall.rotation + " - ";
     }
+
+    result += " -=> " + window.screen.width;
     data.innerText = result;
 }
 
@@ -242,7 +244,7 @@ function toGeoJson() {
         polygon.push(bottomLeft["geometry"]["coordinates"]);
         polygon.push(topLeft["geometry"]["coordinates"]);
 
-        features.push(turf.helpers.polygon([polygon], { "name": stall.label }));
+        features.push(turf.helpers.polygon([polygon], { "name": stall.label, stall: stall }));
     }
     return turf.helpers.featureCollection(features);
 }
