@@ -1,5 +1,9 @@
 let ctx;
-const print = console.log;
+let logDiv;
+
+const print = function (args) {
+    logDiv.innerHTML += args + "<br>";
+};
 
 const point = turf.helpers.point;
 const turfDistance = turf.distance.default;
@@ -130,7 +134,7 @@ function initCanvas() {
     print(center);
     canvasWidth = canvas.width;
     canvasHeight = canvas.height;
-    print(canvas.width, " x ", canvas.height);
+    print(canvas.width + " x " + canvas.height);
 
     ctx.translate(canvasWidth / 2, canvasHeight / 2);
 }
@@ -201,11 +205,12 @@ function drawSuc() {
 }
 
 function updateStats() {
-    stats.innerText = "Frame: " + frameCounter + " Time: " + frameTime;
+    stats.innerText = "Frame: " + frameCounter + " Time in ms: " + frameTime;
 }
 
 function updatePosition(position) {
     pos = position.coords;
+    print("coords lat/lon:" + pos.latitude + " / " + pos.longitude);
     userPosition = [pos.longitude, pos.latitude];
     window.requestAnimationFrame(drawSuc);
 }
@@ -259,11 +264,13 @@ document.addEventListener("DOMContentLoaded", function (e) {
     stallStats = document.getElementById("stallStats");
     data = document.getElementById("data");
     stallLabel = document.getElementById("stallLabel");
+    logDiv = document.getElementById("log");
 
     initCanvas();
     drawSuc();
 
     let watchId = navigator.geolocation.watchPosition(updatePosition, function (positionError) {
+        print("ERROR: " + positionError.message);
         console.log(positionError);
     }, {
         enableHighAccuracy: true,
